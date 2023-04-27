@@ -53,6 +53,20 @@ func TestNewNestedItemID(t *testing.T) {
 			Expected:                   "https://testappconf1.azconfig.io/kv/testKey?label=%2500",
 			ExpectError:                false,
 		},
+		{
+			ConfigurationStoreEndpoint: "https://testappconf1.azconfig.azure.cn",
+			Key:                        "testKey",
+			Label:                      "testLabel",
+			Expected:                   "https://testappconf1.azconfig.azure.cn/kv/testKey?label=testLabel",
+			ExpectError:                false,
+		},
+		{
+			ConfigurationStoreEndpoint: "https://testappconf1.not.valid.com",
+			Key:                        "testKey",
+			Label:                      "testLabel",
+			Expected:                   "",
+			ExpectError:                true,
+		},
 	}
 	for _, tc := range cases {
 		id, err := NewNestedItemID(tc.ConfigurationStoreEndpoint, tc.Key, tc.Label)
