@@ -179,8 +179,10 @@ func (c Client) parseNameFromEndpoint(input string) (*string, error) {
 	// https://the-appconfiguration.azconfig.io
 
 	segments := strings.Split(uri.Host, ".")
-	if len(segments) < 3 || segments[1] != "azconfig" || segments[2] != "io" {
-		return nil, fmt.Errorf("expected a URI in the format `https://the-appconfiguration.azconfig.io` but got %q", uri.Host)
+	if (len(segments) != 3 && strings.HasSuffix(uri.Host, ".azconfig.io")) ||
+		(len(segments) != 4 && strings.HasSuffix(uri.Host, ".azconfig.azure.cn")) ||
+		(len(segments) != 4 && strings.HasSuffix(uri.Host, ".azconfig.azure.us")) {
+		return nil, fmt.Errorf("expected a URI in the format `https://the-appconfiguration.azconfig.io`/`https://the-appconfiguration.azconfig.azure.cn`/`https://the-appconfiguration.azconfig.azure.us` but got %q", uri.Host)
 	}
 	return &segments[0], nil
 }
